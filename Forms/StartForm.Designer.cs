@@ -1,20 +1,15 @@
-namespace Predator_Prey_Simulation
-{
-    partial class StartForm
-    {
+namespace Predator_Prey_Simulation {
+    partial class StartForm {
         private System.ComponentModel.IContainer components = null;
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
+        protected override void Dispose(bool disposing) {
+            if (disposing && (components != null)) {
                 components.Dispose();
             }
             base.Dispose(disposing);
         }
 
-        private void InitializeComponent()
-        {
+        private void InitializeComponent() {
             this.realTimeModeButton = new System.Windows.Forms.Button();
             this.batchModeButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
