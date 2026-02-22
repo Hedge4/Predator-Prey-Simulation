@@ -86,7 +86,7 @@ namespace Predator_Prey_Simulation
             this.resetButton.TabIndex = 2;
             this.resetButton.Text = "Reset";
             this.resetButton.UseVisualStyleBackColor = true;
-            this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
+            this.resetButton.Click += new System.EventHandler(this.ResetButton_Click);
             // 
             // startButton
             // 
@@ -96,7 +96,7 @@ namespace Predator_Prey_Simulation
             this.startButton.TabIndex = 1;
             this.startButton.Text = "Start Simulation";
             this.startButton.UseVisualStyleBackColor = true;
-            this.startButton.Click += new System.EventHandler(this.startButton_Click);
+            this.startButton.Click += new System.EventHandler(this.StartButton_Click);
             // 
             // settingsButton
             // 
@@ -106,7 +106,7 @@ namespace Predator_Prey_Simulation
             this.settingsButton.TabIndex = 0;
             this.settingsButton.Text = "Update Settings";
             this.settingsButton.UseVisualStyleBackColor = true;
-            this.settingsButton.Click += new System.EventHandler(this.settingsButton_Click);
+            this.settingsButton.Click += new System.EventHandler(this.SettingsButton_Click);
             // 
             // textBox6
             // 

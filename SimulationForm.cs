@@ -30,6 +30,28 @@ namespace Predator_Prey_Simulation
             settingsPanel.Resize += SettingsPanel_Resize;
             // Initial positioning
             PositionButtons();
+
+            // Handle form closing to return to StartForm
+            this.FormClosing += SimulationForm_FormClosing;
+        }
+
+        private void SimulationForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Stop the timer to clean up resources
+            if (simulationTimer != null && simulationTimer.Enabled)
+            {
+                simulationTimer.Stop();
+            }
+
+            // Show the StartForm (it's still running in the background)
+            foreach (Form form in Application.OpenForms)
+            {
+                if (form is StartForm)
+                {
+                    form.Show();
+                    break;
+                }
+            }
         }
 
         private void SettingsPanel_Resize(object sender, EventArgs e)
@@ -61,27 +83,27 @@ namespace Predator_Prey_Simulation
         /// <summary>
         /// Replace values used by the simulation with values from the settings fields this tick
         /// </summary>
-        private void settingsButton_Click(object sender, EventArgs e)
+        private void SettingsButton_Click(object sender, EventArgs e)
         {
             // TODO
         }
 
-        private void startButton_Click(object sender, EventArgs e)
+        private void StartButton_Click(object sender, EventArgs e)
         {
             if (simulationTimer.Enabled)
             {
                 simulationTimer.Stop();
-                startButton.Text = "Resume";
+                startButton.Text = "Resume Simulation";
             } else {
                 simulationTimer.Start();
-                startButton.Text = "Pause";
+                startButton.Text = "Pause Simulation";
             }
         }
 
-        private void resetButton_Click(object sender, EventArgs e)
+        private void ResetButton_Click(object sender, EventArgs e)
         {
             simulationTimer.Stop();
-            startButton.Text = "Start";
+            startButton.Text = "Start Simulation";
             graphicsPanel.Invalidate();
         }
     }
