@@ -1,4 +1,4 @@
-using Predator_Prey_Simulation.SimulationLogic;
+﻿using Predator_Prey_Simulation.SimulationLogic;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -19,6 +19,9 @@ namespace Predator_Prey_Simulation {
         // Used to manage simulation state and update it
         private SimulationConfig simulationConfig;
         private SimulationEngine simulationEngine;
+
+        // Current value labels (one per parameter)
+        private Label[] currentValueLabels;
 
         public SimulationForm() {
             InitializeComponent();
@@ -64,15 +67,49 @@ namespace Predator_Prey_Simulation {
                     textBox.Text = parameter.Value.ToString();
                 }
             }
+
+            // After initializing labels and textboxes, create the current value labels
+            CreateCurrentValueLabels(parameters.Length);
         }
 
         private Label GetLabelByIndex(int index) {
             string controlName = $"label{index}";
             return settingsPanel.Controls.Find(controlName, false).FirstOrDefault() as Label;
         }
+
         private TextBox GetTextBoxByIndex(int index) {
             string controlName = $"textBox{index}";
             return settingsPanel.Controls.Find(controlName, false).FirstOrDefault() as TextBox;
+        }
+
+        /// <summary>
+        /// Create small labels below each textbox to display current parameter values
+        /// </summary>
+        private void CreateCurrentValueLabels(int amount) {
+            currentValueLabels = new Label[amount];
+
+            for (int i = 0; i < amount; i++) {
+                TextBox textBox = GetTextBoxByIndex(i);
+                if (textBox == null) continue;
+
+                Label currentValueLabel = new Label {
+                    Name = $"currentValueLabel{i}",
+                    AutoSize = true,
+                    Font = new Font(textBox.Font.FontFamily, 8f),
+                    ForeColor = Color.Gray,
+                    Text = GetCurrentValueLabelText(i)
+                };
+
+                // Position below the textbox
+                currentValueLabel.Location = new Point(textBox.Left, textBox.Bottom + 2);
+                settingsPanel.Controls.Add(currentValueLabel);
+                currentValueLabels[i] = currentValueLabel;
+            }
+        }
+
+        private string GetCurrentValueLabelText(int index) {
+            var parameter = simulationConfig.GetParameterByIndex(index);
+            return parameter != null ? $"Currently: {parameter.Value})" : "";
         }
 
         private void SimulationForm_FormClosing(object sender, FormClosingEventArgs e) {
