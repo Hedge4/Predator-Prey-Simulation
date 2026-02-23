@@ -109,7 +109,7 @@ namespace Predator_Prey_Simulation {
 
         private string GetCurrentValueLabelText(int index) {
             var parameter = simulationConfig.GetParameterByIndex(index);
-            return parameter != null ? $"Currently: {parameter.Value})" : "";
+            return parameter != null ? $"Currently {parameter.Value}" : "";
         }
 
         private void SimulationForm_FormClosing(object sender, FormClosingEventArgs e) {
@@ -153,7 +153,24 @@ namespace Predator_Prey_Simulation {
         /// Replace values used by the simulation with values from the settings fields this tick
         /// </summary>
         private void SettingsButton_Click(object sender, EventArgs e) {
-            // TODO
+            var parameters = simulationConfig.GetAllParameters();
+            for (int i = 0; i < parameters.Length; i++) {
+                var parameter = simulationConfig.GetParameterByIndex(i);
+
+                // Try to find the corresponding textBox
+                TextBox textBox = GetTextBoxByIndex(i);
+                if (textBox == null) continue;
+
+                // If the textBox was found, update the config value and the current value label
+                if (double.TryParse(textBox.Text, out double newValue)) {
+                    simulationConfig.SetValueByIndex(i, newValue);
+                    if (currentValueLabels != null && i < currentValueLabels.Length) {
+                        currentValueLabels[i].Text = GetCurrentValueLabelText(i);
+                    }
+                } else {
+                    MessageBox.Show($"Invalid input for {parameter.DisplayName}. Please enter a valid number.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         private void StartButton_Click(object sender, EventArgs e) {
