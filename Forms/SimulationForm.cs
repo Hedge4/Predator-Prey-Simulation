@@ -1,7 +1,10 @@
+using Predator_Prey_Simulation.SimulationLogic;
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
-using Predator_Prey_Simulation.SimulationLogic;
+using Label = System.Windows.Forms.Label;
+using TextBox = System.Windows.Forms.TextBox;
 
 namespace Predator_Prey_Simulation {
     public partial class SimulationForm : Form {
@@ -25,6 +28,7 @@ namespace Predator_Prey_Simulation {
         }
 
         private void SetupSimulation() {
+            InitializeParameterLabels();
             graphicsPanel.Paint += GraphicsPanel_Paint;
 
             simulationTimer = new Timer();
@@ -38,6 +42,37 @@ namespace Predator_Prey_Simulation {
 
             // Handle form closing to return to StartForm
             this.FormClosing += SimulationForm_FormClosing;
+        }
+
+        /// <summary>
+        /// Initializes parameter labels and textBox values from SimulationConfig
+        /// </summary>
+        private void InitializeParameterLabels() {
+            var parameters = simulationConfig.GetAllParameters();
+            for (int i = 0; i < parameters.Length; i++) {
+                var parameter = simulationConfig.GetParameterByIndex(i);
+
+                // Try to find and update label
+                Label label = GetLabelByIndex(i);
+                if (label != null) {
+                    label.Text = parameter.DisplayName + ":";
+                }
+
+                // Try to find and update textBox
+                TextBox textBox = GetTextBoxByIndex(i);
+                if (textBox != null) {
+                    textBox.Text = parameter.Value.ToString();
+                }
+            }
+        }
+
+        private Label GetLabelByIndex(int index) {
+            string controlName = $"label{index}";
+            return settingsPanel.Controls.Find(controlName, false).FirstOrDefault() as Label;
+        }
+        private TextBox GetTextBoxByIndex(int index) {
+            string controlName = $"textBox{index}";
+            return settingsPanel.Controls.Find(controlName, false).FirstOrDefault() as TextBox;
         }
 
         private void SimulationForm_FormClosing(object sender, FormClosingEventArgs e) {
