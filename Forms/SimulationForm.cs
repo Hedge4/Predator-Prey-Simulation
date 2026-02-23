@@ -1,17 +1,26 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Predator_Prey_Simulation.SimulationLogic;
 
 namespace Predator_Prey_Simulation {
     public partial class SimulationForm : Form {
         private Timer simulationTimer;
+
+        // Used to control button positions in the settingsPanel
         private const int BUTTON_MARGIN = 20;
         private const int BUTTON_SPACING = 15;
         private const int BUTTON_HEIGHT = 30;
         private const int BUTTON_WIDTH = 107;
 
+        // Used to manage simulation state and update it
+        private SimulationConfig simulationConfig;
+        private SimulationEngine simulationEngine;
+
         public SimulationForm() {
             InitializeComponent();
+            simulationConfig = new SimulationConfig();
+            simulationEngine = new SimulationEngine(simulationConfig);
             SetupSimulation();
         }
 
